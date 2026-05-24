@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500&family=Space+Mono:wght@400;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#080D24;--cyan:#00E5FF;--pink:#FF6EC7;--gold:#FFD166;--teal:#00FFC6;--violet:#A78BFF;--blue:#0099DD;--text:#E8F0FF;--muted:#5A7090;--border:#1A2A44;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--text);font-family:'Outfit',sans-serif;overflow-x:hidden;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(8,13,36,0.85);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);}
+.nav-logo{font-family:'Space Mono',monospace;font-size:13px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;}
+.nav-links{display:flex;gap:2.5rem;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover{color:var(--text);}
+
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:6rem 2rem 4rem;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(0,100,200,0.12) 0%,transparent 70%);pointer-events:none;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:0.25;pointer-events:none;}
+.hero-mark{width:min(320px,75vw);margin-bottom:2.5rem;animation:fadeUp 1s ease both;}
+.hero-wordmark{text-align:center;margin-bottom:1rem;animation:fadeUp 1s 0.2s ease both;opacity:0;}
+.hero-wordmark h1{font-family:'Outfit',sans-serif;font-weight:200;font-size:clamp(2.2rem,6vw,3.8rem);letter-spacing:0.2em;color:#fff;}
+.hero-wordmark span{display:block;font-family:'Space Mono',monospace;font-size:clamp(0.7rem,2vw,1rem);letter-spacing:0.7em;color:var(--cyan);margin-top:0.3rem;}
+.hero-tagline{font-size:clamp(0.65rem,1.5vw,0.8rem);letter-spacing:0.22em;color:#5A7090;text-transform:uppercase;margin-bottom:2.5rem;animation:fadeUp 1s 0.4s ease both;opacity:0;}
+.hero-cta{display:flex;gap:1rem;animation:fadeUp 1s 0.6s ease both;opacity:0;}
+.btn-primary{padding:0.75rem 2rem;border:0.5px solid var(--cyan);color:var(--cyan);background:transparent;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.btn-primary:hover{background:rgba(0,229,255,0.08);}
+.btn-ghost{padding:0.75rem 2rem;border:0.5px solid var(--border);color:var(--muted);background:transparent;font-family:'Outfit',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;text-decoration:none;}
+.btn-ghost:hover{border-color:var(--muted);color:var(--text);}
+.scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--muted);font-size:10px;letter-spacing:2px;animation:fadeUp 1s 1s ease both;opacity:0;}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--muted),transparent);}
+
+section{padding:6rem 3rem;}
+.section-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:1rem;}
+.section-title{font-family:'Outfit',sans-serif;font-weight:200;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:0.05em;margin-bottom:1.5rem;color:#fff;}
+
+#about{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.about-text p{color:#7A90AA;line-height:1.9;font-size:1rem;margin-bottom:1.2rem;font-weight:300;}
+.about-text p strong{color:var(--text);font-weight:400;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+.stat-card{border:0.5px solid var(--border);padding:1.5rem;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.5;}
+.stat-num{font-family:'Space Mono',monospace;font-size:2rem;font-weight:700;margin-bottom:0.3rem;}
+.stat-label{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+
+#brands{background:rgba(255,255,255,0.01);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);}
+.brands-inner{max-width:1100px;margin:0 auto;}
+.brands-intro{max-width:600px;margin-bottom:3.5rem;}
+.brands-intro p{color:#7A90AA;line-height:1.8;font-size:0.95rem;font-weight:300;}
+.brands-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border);}
+.brand-card{background:var(--ink);padding:2rem;transition:background 0.2s;position:relative;overflow:hidden;}
+.brand-card:hover{background:#0D1530;}
+.brand-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;transform:scaleX(0);transition:transform 0.3s;transform-origin:left;}
+.brand-card:hover::after{transform:scaleX(1);}
+.bc-dot{width:10px;height:10px;border-radius:50%;margin-bottom:1.2rem;}
+.bc-name{font-family:'Outfit',sans-serif;font-weight:400;font-size:1.05rem;letter-spacing:0.03em;margin-bottom:0.5rem;color:#fff;}
+.bc-category{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;}
+.bc-desc{font-size:0.85rem;color:#5A7090;line-height:1.7;font-weight:300;}
+
+#story{max-width:780px;margin:0 auto;text-align:center;}
+#story .story-body{color:#7A90AA;line-height:2;font-size:1.05rem;font-weight:300;margin-bottom:2rem;}
+#story .story-body strong{color:var(--cyan);}
+.quote-line{width:40px;height:1px;background:var(--cyan);margin:0 auto 2rem;opacity:0.4;}
+
+#contact{background:linear-gradient(to bottom,rgba(0,100,200,0.04),transparent);border-top:0.5px solid var(--border);}
+.contact-inner{max-width:700px;margin:0 auto;text-align:center;}
+.contact-inner p{color:#7A90AA;margin-bottom:2.5rem;line-height:1.8;font-size:0.95rem;}
+.contact-form{display:flex;flex-direction:column;gap:1rem;text-align:left;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.form-field{display:flex;flex-direction:column;gap:0.4rem;}
+.form-field label{font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.form-field input,.form-field textarea,.form-field select{background:rgba(255,255,255,0.03);border:0.5px solid var(--border);color:var(--text);padding:0.75rem 1rem;font-family:'Outfit',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{border-color:rgba(0,229,255,0.4);}
+.form-field textarea{resize:none;height:120px;}
+.form-field select option{background:var(--ink);}
+.form-submit{margin-top:0.5rem;}
+
+/* FOOTER */
+footer{padding:3rem 3rem 2rem;border-top:0.5px solid var(--border);}
+.footer-logos{display:flex;justify-content:center;align-items:flex-start;gap:2rem;flex-wrap:wrap;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:0.5px solid var(--border);}
+.footer-brand{display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0.6;transition:opacity 0.2s;cursor:default;}
+.footer-brand:hover{opacity:1;}
+.footer-brand-dot{width:8px;height:8px;border-radius:50%;}
+.footer-brand-name{font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;text-align:center;max-width:90px;line-height:1.4;}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-left{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.footer-right{font-size:11px;color:var(--muted);letter-spacing:1px;display:flex;align-items:center;gap:0.5rem;}
+.footer-dot{display:inline-block;width:6px;height:6px;border-radius:50%;vertical-align:middle;}
+
+/* Footer SVG logos */
+.footer-logo-svg{width:44px;height:44px;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.section-divider{display:flex;align-items:center;gap:1rem;margin-bottom:3rem;}
+.section-divider-line{flex:1;height:0.5px;background:var(--border);}
+.section-divider-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);white-space:nowrap;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Josephson Labs</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#brands">Brands</a>
+    <a href="#story">Our Story</a>
+    <a href="#contact">Connect</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <svg class="hero-mark" viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="hcg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#00E5FF" stop-opacity="0.25"/><stop offset="100%" stop-color="#080D24" stop-opacity="0"/></radialGradient>
+      <radialGradient id="hnA" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#00E5FF"/><stop offset="100%" stop-color="#0066CC"/></radialGradient>
+      <radialGradient id="hnB" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FF6EC7"/><stop offset="100%" stop-color="#C0187A"/></radialGradient>
+      <radialGradient id="hnC" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#A78BFF"/><stop offset="100%" stop-color="#5B21B6"/></radialGradient>
+      <radialGradient id="hnD" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#FFD166"/><stop offset="100%" stop-color="#B8860B"/></radialGradient>
+      <radialGradient id="hnE" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#00FFC6"/><stop offset="100%" stop-color="#00896B"/></radialGradient>
+      <radialGradient id="hcr" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#0D2A5E"/><stop offset="50%" stop-color="#071428"/><stop offset="100%" stop-color="#040C1A"/></radialGradient>
+      <linearGradient id="hjlG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00E5FF"/><stop offset="50%" stop-color="#7B9FFF"/><stop offset="100%" stop-color="#D94FAD"/></linearGradient>
+      <filter id="hgl"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="hjlGlow"><feGaussianBlur stdDeviation="1.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <clipPath id="hcc"><circle cx="340" cy="170" r="29"/></clipPath>
+    </defs>
+    <circle cx="340" cy="170" r="80" fill="url(#hcg)" filter="url(#hgl)"/>
+    <line x1="340" y1="170" x2="340" y2="68" stroke="#FF6EC7" stroke-width="1.5" stroke-opacity="0.6"/>
+    <line x1="340" y1="170" x2="440" y2="108" stroke="#00FFC6" stroke-width="1.5" stroke-opacity="0.6"/>
+    <line x1="340" y1="170" x2="240" y2="108" stroke="#FFD166" stroke-width="1.5" stroke-opacity="0.6"/>
+    <line x1="340" y1="170" x2="240" y2="232" stroke="#00E5FF" stroke-width="1.5" stroke-opacity="0.6"/>
+    <line x1="340" y1="170" x2="440" y2="232" stroke="#A78BFF" stroke-width="1.5" stroke-opacity="0.6"/>
+    <line x1="240" y1="108" x2="340" y2="68" stroke="#1A2A44" stroke-width="0.5" stroke-dasharray="3 4"/>
+    <line x1="340" y1="68" x2="440" y2="108" stroke="#1A2A44" stroke-width="0.5" stroke-dasharray="3 4"/>
+    <line x1="440" y1="108" x2="440" y2="232" stroke="#1A2A44" stroke-width="0.5" stroke-dasharray="3 4"/>
+    <line x1="440" y1="232" x2="240" y2="232" stroke="#1A2A44" stroke-width="0.5" stroke-dasharray="3 4"/>
+    <line x1="240" y1="232" x2="240" y2="108" stroke="#1A2A44" stroke-width="0.5" stroke-dasharray="3 4"/>
+    <circle cx="340" cy="68" r="20" fill="#0A1535" stroke="#FF6EC7" stroke-width="1.5"/><circle cx="340" cy="68" r="9" fill="url(#hnB)"/>
+    <circle cx="440" cy="108" r="20" fill="#0A1535" stroke="#00FFC6" stroke-width="1.5"/><circle cx="440" cy="108" r="9" fill="url(#hnE)"/>
+    <circle cx="240" cy="108" r="20" fill="#0A1535" stroke="#FFD166" stroke-width="1.5"/><circle cx="240" cy="108" r="9" fill="url(#hnD)"/>
+    <circle cx="240" cy="232" r="20" fill="#0A1535" stroke="#00E5FF" stroke-width="1.5"/><circle cx="240" cy="232" r="9" fill="url(#hnA)"/>
+    <circle cx="440" cy="232" r="20" fill="#0A1535" stroke="#A78BFF" stroke-width="1.5"/><circle cx="440" cy="232" r="9" fill="url(#hnC)"/>
+    <circle cx="340" cy="170" r="28" fill="url(#hcr)" stroke="#00AAFF" stroke-width="2"/>
+    <g clip-path="url(#hcc)" opacity="0.4">
+      <line x1="312" y1="162" x2="325" y2="162" stroke="#00E5FF" stroke-width="0.5"/>
+      <line x1="325" y1="162" x2="325" y2="156" stroke="#00E5FF" stroke-width="0.5"/>
+      <line x1="325" y1="156" x2="333" y2="156" stroke="#00E5FF" stroke-width="0.5"/>
+      <line x1="347" y1="156" x2="355" y2="156" stroke="#00E5FF" stroke-width="0.5"/>
+      <line x1="355" y1="156" x2="355" y2="162" stroke="#00E5FF" stroke-width="0.5"/>
+      <line x1="355" y1="162" x2="368" y2="162" stroke="#00E5FF" stroke-width="0.5"/>
+      <line x1="312" y1="180" x2="322" y2="180" stroke="#7B9FFF" stroke-width="0.5"/>
+      <line x1="322" y1="180" x2="322" y2="186" stroke="#7B9FFF" stroke-width="0.5"/>
+      <line x1="322" y1="186" x2="331" y2="186" stroke="#7B9FFF" stroke-width="0.5"/>
+      <line x1="349" y1="186" x2="358" y2="186" stroke="#7B9FFF" stroke-width="0.5"/>
+      <line x1="358" y1="186" x2="358" y2="180" stroke="#7B9FFF" stroke-width="0.5"/>
+      <line x1="358" y1="180" x2="368" y2="180" stroke="#7B9FFF" stroke-width="0.5"/>
+      <circle cx="325" cy="162" r="1.2" fill="#00E5FF"/>
+      <circle cx="355" cy="162" r="1.2" fill="#00E5FF"/>
+      <circle cx="340" cy="170" r="3" fill="#00AAFF" opacity="0.5"/>
+      <circle cx="340" cy="170" r="7" fill="none" stroke="#00AAFF" stroke-width="0.5" opacity="0.25"/>
+    </g>
+    <circle cx="340" cy="170" r="40" fill="none" stroke="#1A3560" stroke-width="3"/>
+    <path d="M 340 130 A 40 40 0 0 1 374.6 150" fill="none" stroke="#00FFC6" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 374.6 150 A 40 40 0 0 1 374.6 190" fill="none" stroke="#FF6EC7" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 374.6 190 A 40 40 0 0 1 340 210" fill="none" stroke="#A78BFF" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 340 210 A 40 40 0 0 1 305.4 190" fill="none" stroke="#FFD166" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 305.4 190 A 40 40 0 0 1 305.4 150" fill="none" stroke="#00E5FF" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 305.4 150 A 40 40 0 0 1 340 130" fill="none" stroke="#00FFC6" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="376" cy="214" r="2.5" fill="#FF6EC7" opacity="0.9"/>
+    <circle cx="360" cy="225" r="3.5" fill="#A78BFF" opacity="0.85"/>
+    <circle cx="332" cy="213" r="2" fill="#FFD166" opacity="0.9"/>
+    <circle cx="306" cy="198" r="3" fill="#FFD166" opacity="0.8"/>
+    <circle cx="298" cy="165" r="2" fill="#00E5FF" opacity="0.9"/>
+    <circle cx="318" cy="134" r="3" fill="#00FFC6" opacity="0.85"/>
+    <circle cx="354" cy="131" r="2" fill="#00FFC6" opacity="0.7"/>
+    <circle cx="379" cy="158" r="2.5" fill="#00E5FF" opacity="0.9"/>
+    <text dominant-baseline="central" fill="url(#hjlG)" font-size="17" font-family="sans-serif" font-weight="300" filter="url(#hjlGlow)">
+      <tspan x="328" y="170" text-anchor="middle">J</tspan>
+      <tspan x="353" y="170" text-anchor="middle">L</tspan>
+    </text>
+  </svg>
+  <div class="hero-wordmark">
+    <h1>JOSEPHSON</h1>
+    <span>L A B S</span>
+  </div>
+  <p class="hero-tagline">The Junction Between Community and Tech</p>
+  <div class="hero-cta">
+    <a href="#about" class="btn-primary">Discover More</a>
+    <a href="#contact" class="btn-ghost">Get In Touch</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<section>
+  <div id="about">
+    <div class="about-text">
+      <p class="section-label">About</p>
+      <h2 class="section-title">Enabling Where<br>Everything Connects</h2>
+      <p>In quantum physics, a <strong>Josephson junction</strong> is the critical link between two superconductors — a connection point where energy flows freely and amplifies everything it touches.</p>
+      <p>Josephson Labs is built on that same principle: <strong>the junction that connects people, businesses, communities, and causes</strong> — transferring energy, potential, and momentum across every venture it powers.</p>
+      <p>Founded by <strong>Robert Barrows</strong>, Josephson Labs is the parent organization behind a portfolio of brands spanning technology, community, philanthropy, sport, and business — all united by a single mission: enabling people working to build better communities and businesses to achieve a broader potential.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--cyan);">6</div>
+        <div class="stat-label">Active Brands</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--pink);">30+</div>
+        <div class="stat-label">Years Building</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--teal);">5</div>
+        <div class="stat-label">Pillars</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" style="color:var(--gold);">1</div>
+        <div class="stat-label">Junction</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="brands">
+  <div class="brands-inner">
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Our Brand Community</div>
+      <div class="section-divider-line"></div>
+    </div>
+    <div class="brands-intro">
+      <h2 class="section-title">Six Brands.<br>One Junction.</h2>
+      <p>Each brand operates independently within its domain, powered by the shared energy, expertise, and network that flows through Josephson Labs at the center.</p>
+    </div>
+    <div class="brands-grid">
+      <div class="brand-card" style="--ac:#FF6EC7">
+        <style>.brand-card:nth-child(1)::after{background:#FF6EC7;}</style>
+        <div class="bc-dot" style="background:#FF6EC7;box-shadow:0 0 8px #FF6EC7aa;"></div>
+        <div class="bc-name">Team Allnighters</div>
+        <div class="bc-category" style="color:#FF6EC7;">Community &amp; Sport</div>
+        <div class="bc-desc">A spirited sports collective bringing together players, friends, and community across softball, volleyball, and charitable events since 1994.</div>
+      </div>
+      <div class="brand-card">
+        <style>.brand-card:nth-child(2)::after{background:#00FFC6;}</style>
+        <div class="bc-dot" style="background:#00FFC6;box-shadow:0 0 8px #00FFC6aa;"></div>
+        <div class="bc-name">Boston Pickleball Association</div>
+        <div class="bc-category" style="color:#00FFC6;">Sport &amp; Instruction</div>
+        <div class="bc-desc">Professional pickleball instruction, venue consulting, and sports development. Coaching, training, and building the sport from the ground up.</div>
+      </div>
+      <div class="brand-card">
+        <style>.brand-card:nth-child(3)::after{background:#FFD166;}</style>
+        <div class="bc-dot" style="background:#FFD166;box-shadow:0 0 8px #FFD166aa;"></div>
+        <div class="bc-name">Play for a Cause</div>
+        <div class="bc-category" style="color:#FFD166;">Philanthropy</div>
+        <div class="bc-desc">A nonprofit platform that transforms play into purpose — organizing fundraising events like tournaments, galas, and tastings that connect donors to causes they love.</div>
+      </div>
+      <div class="brand-card">
+        <style>.brand-card:nth-child(4)::after{background:#00E5FF;}</style>
+        <div class="bc-dot" style="background:#00E5FF;box-shadow:0 0 8px #00E5FFaa;"></div>
+        <div class="bc-name">Outcome Builder AI</div>
+        <div class="bc-category" style="color:#00E5FF;">Technology</div>
+        <div class="bc-desc">A full-service technology solutions provider building web platforms, AI assistants, CRMs, and custom digital infrastructure for modern businesses.</div>
+      </div>
+      <div class="brand-card">
+        <style>.brand-card:nth-child(5)::after{background:#A78BFF;}</style>
+        <div class="bc-dot" style="background:#A78BFF;box-shadow:0 0 8px #A78BFFaa;"></div>
+        <div class="bc-name">monetizationCloud</div>
+        <div class="bc-category" style="color:#A78BFF;">Business Operations</div>
+        <div class="bc-desc">An outcomes enablement platform helping companies architect their sales, revenue, and marketing operations for sustainable, scalable growth.</div>
+      </div>
+      <div class="brand-card">
+        <style>.brand-card:nth-child(6)::after{background:#FF6EC7;}</style>
+        <div class="bc-dot" style="background:#FF6EC7;box-shadow:0 0 8px #FF6EC7aa;"></div>
+        <div class="bc-name">The Stowe Times</div>
+        <div class="bc-category" style="color:#FF6EC7;">Community &amp; Lifestyle</div>
+        <div class="bc-desc">A storied tradition of travel, camaraderie, and friendship — organizing annual group experiences for a growing community of friends since 1989.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <div class="section-divider">
+    <div class="section-divider-line"></div>
+    <div class="section-divider-label">The Junction Story</div>
+    <div class="section-divider-line"></div>
+  </div>
+  <p class="section-label" style="text-align:center;">Why Josephson</p>
+  <h2 class="section-title" style="text-align:center;">The Physics of<br>Connection</h2>
+  <div class="quote-line"></div>
+  <p class="story-body">In 1962, physicist Brian Josephson predicted that two superconductors separated by a thin insulating barrier could still transfer energy between them — not despite the barrier, but <strong>through it</strong>. That discovery won the Nobel Prize.</p>
+  <p class="story-body">Josephson Labs is named for that principle. Every brand in our portfolio operates in its own domain — sport, tech, philanthropy, business, community — separated by context and purpose. But at the center, <strong>the junction</strong> connects them all, allowing energy, ideas, relationships, and resources to flow freely across every boundary in order to achieve exponential outcomes.</p>
+  <p class="story-body">This isn't a holding company. It's a <strong>living junction</strong> — the critical link that amplifies everything it connects.</p>
+</section>
+
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <div class="section-divider-label">Connect</div>
+      <div class="section-divider-line"></div>
+    </div>
+    <h2 class="section-title">Let's Build<br>Together</h2>
+    <p>Whether you're looking to partner, collaborate, get coached, build technology, raise money for a cause, or simply connect — Josephson Labs is the junction where it starts.</p>
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-field">
+          <label>First Name</label>
+          <input type="text" placeholder="Robert"/>
+        </div>
+        <div class="form-field">
+          <label>Last Name</label>
+          <input type="text" placeholder="Barrows"/>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" placeholder="you@josephsonlabs.co"/>
+      </div>
+      <div class="form-field">
+        <label>I'm interested in</label>
+        <select>
+          <option value="">Select a brand or topic...</option>
+          <option>Josephson Labs — General Inquiry</option>
+          <option>Team Allnighters</option>
+          <option>Boston Pickleball Association</option>
+          <option>Play for a Cause</option>
+          <option>Outcome Builder AI</option>
+          <option>monetizationCloud</option>
+          <option>The Stowe Times</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Message</label>
+        <textarea placeholder="Tell us what's on your mind..."></textarea>
+      </div>
+      <div class="form-submit">
+        <button class="btn-primary" style="width:100%;padding:1rem;font-size:11px;">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <!-- Brand logos row -->
+  <div class="footer-logos">
+
+    <!-- Team Allnighters -->
+    <div class="footer-brand">
+      <svg class="footer-logo-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="20" fill="#0A1020" stroke="#FF6EC7" stroke-width="1"/>
+        <circle cx="22" cy="22" r="8" fill="none" stroke="#FF6EC7" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="22" y="26" text-anchor="middle" fill="#FF6EC7" font-size="9" font-family="sans-serif" font-weight="500">TA</text>
+      </svg>
+      <div class="footer-brand-name" style="color:#FF6EC7;">Team Allnighters</div>
+    </div>
+
+    <!-- Boston Pickleball Association -->
+    <div class="footer-brand">
+      <svg class="footer-logo-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="20" fill="#0A1020" stroke="#00FFC6" stroke-width="1"/>
+        <circle cx="22" cy="22" r="8" fill="none" stroke="#00FFC6" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="22" y="26" text-anchor="middle" fill="#00FFC6" font-size="9" font-family="sans-serif" font-weight="500">BPA</text>
+      </svg>
+      <div class="footer-brand-name" style="color:#00FFC6;">Boston Pickleball</div>
+    </div>
+
+    <!-- Play for a Cause -->
+    <div class="footer-brand">
+      <svg class="footer-logo-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="20" fill="#0A1020" stroke="#FFD166" stroke-width="1"/>
+        <circle cx="22" cy="22" r="8" fill="none" stroke="#FFD166" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="22" y="26" text-anchor="middle" fill="#FFD166" font-size="9" font-family="sans-serif" font-weight="500">PFC</text>
+      </svg>
+      <div class="footer-brand-name" style="color:#FFD166;">Play for a Cause</div>
+    </div>
+
+    <!-- Outcome Builder AI -->
+    <div class="footer-brand">
+      <svg class="footer-logo-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="20" fill="#0A1020" stroke="#00E5FF" stroke-width="1"/>
+        <circle cx="22" cy="22" r="8" fill="none" stroke="#00E5FF" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="22" y="26" text-anchor="middle" fill="#00E5FF" font-size="9" font-family="sans-serif" font-weight="500">OB</text>
+      </svg>
+      <div class="footer-brand-name" style="color:#00E5FF;">Outcome Builder AI</div>
+    </div>
+
+    <!-- monetizationCloud -->
+    <div class="footer-brand">
+      <svg class="footer-logo-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="20" fill="#0A1020" stroke="#A78BFF" stroke-width="1"/>
+        <circle cx="22" cy="22" r="8" fill="none" stroke="#A78BFF" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="22" y="26" text-anchor="middle" fill="#A78BFF" font-size="9" font-family="sans-serif" font-weight="500">MC</text>
+      </svg>
+      <div class="footer-brand-name" style="color:#A78BFF;">monetization Cloud</div>
+    </div>
+
+    <!-- The Stowe Times -->
+    <div class="footer-brand">
+      <svg class="footer-logo-svg" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="22" cy="22" r="20" fill="#0A1020" stroke="#FF6EC7" stroke-width="1"/>
+        <circle cx="22" cy="22" r="8" fill="none" stroke="#FF6EC7" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="22" y="26" text-anchor="middle" fill="#FF6EC7" font-size="9" font-family="sans-serif" font-weight="500">TST</text>
+      </svg>
+      <div class="footer-brand-name" style="color:#FF6EC7;">The Stowe Times</div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-left">© 2026 Josephson Labs &nbsp;·&nbsp; josephsonlabs.co</div>
+    <div class="footer-right">
+      <span class="footer-dot" style="background:#00E5FF;"></span>Technology
+      &nbsp;
+      <span class="footer-dot" style="background:#FF6EC7;"></span>Community
+      &nbsp;
+      <span class="footer-dot" style="background:#FFD166;"></span>Philanthropy
+      &nbsp;
+      <span class="footer-dot" style="background:#00FFC6;"></span>Sport
+      &nbsp;
+      <span class="footer-dot" style="background:#A78BFF;"></span>Business
+    </div>
+  </div>
+</footer>
+
+</body>
