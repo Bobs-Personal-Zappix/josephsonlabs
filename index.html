@@ -97,6 +97,139 @@ footer{padding:3rem 3rem 2rem;border-top:0.5px solid var(--border);}
 .section-divider{display:flex;align-items:center;gap:1rem;margin-bottom:3rem;}
 .section-divider-line{flex:1;height:0.5px;background:var(--border);}
 .section-divider-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);white-space:nowrap;}
+/* ── MOBILE RESPONSIVE ── */
+@media (max-width: 768px) {
+
+  /* Nav */
+  nav {
+    padding: 0 1.5rem;
+    height: auto;
+    min-height: 60px;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .nav-links {
+    display: none;
+  }
+
+  /* Hero */
+  #hero {
+    padding: 5rem 1.5rem 3rem;
+    min-height: auto;
+  }
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  h1 {
+    font-size: 2.4rem;
+  }
+  .hero-wordmark h1 {
+    font-size: 2.4rem;
+  }
+  .hero-cta {
+    flex-direction: column;
+  }
+  .hero-visual svg,
+  .hero-mark {
+    width: min(280px, 90vw);
+  }
+
+  /* About section */
+  #about {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 0;
+  }
+  .about-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* Brands grid */
+  .brands-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Story section */
+  #story {
+    padding: 4rem 1.5rem;
+  }
+
+  /* All sections */
+  section {
+    padding: 4rem 1.5rem;
+  }
+
+  /* Contact form */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer */
+  footer {
+    padding: 1.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .footer-logos {
+    gap: 1.25rem;
+    justify-content: flex-start;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  /* Typography scale-down */
+  .section-title {
+    font-size: 1.8rem;
+  }
+  .hero-tagline {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+  }
+
+  /* Trust bar / marquee */
+  .trust-bar {
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    justify-content: flex-start;
+  }
+
+  /* Who we serve */
+  .who-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .who-cards {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stats bar */
+  .stats-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1, .hero-h1 {
+    font-size: 2rem;
+  }
+  .hstat-num, .stat-num {
+    font-size: 2rem;
+  }
+  .section-title, .sec-title, .svc-title {
+    font-size: 1.6rem;
+  }
+  .about-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 </style>
 </head>
 <body>
