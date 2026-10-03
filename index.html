@@ -84,8 +84,6 @@ section{padding:6rem 3rem;}
 .bc-category{font-size:9px;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;}
 .bc-desc{font-size:0.85rem;color:#5A7090;line-height:1.7;font-weight:300;}
 .bc-desc strong{color:var(--text);font-weight:400;}
-.brand-card-wide{grid-column:1 / -1;}
-.brand-card-wide .bc-desc{max-width:760px;}
 
 /* STORY */
 #story{max-width:780px;margin:0 auto;text-align:center;}
@@ -123,6 +121,34 @@ footer{padding:3rem;border-top:0.5px solid var(--border);}
 .section-divider{display:flex;align-items:center;gap:1rem;margin-bottom:3rem;}
 .section-divider-line{flex:1;height:0.5px;background:var(--border);}
 .section-divider-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);white-space:nowrap;}
+
+/* JUNCTION MAP — Josephson Labs at the center, six pillars around it */
+.junction-map{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.86fr) minmax(0,1fr);grid-template-rows:repeat(3,auto);column-gap:3rem;row-gap:1.25rem;}
+.hub{grid-column:2;grid-row:1 / span 3;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2.75rem 1.75rem;border:0.5px solid rgba(0,229,255,0.35);background:radial-gradient(ellipse at 50% 42%,rgba(0,150,255,0.16) 0%,transparent 70%),#0A1330;}
+.hub::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#00E5FF,#A3E635,#FF6EC7,#FFD166,#00FFC6,#A78BFF);}
+.hub-mark{width:150px;height:150px;margin-bottom:1.5rem;}
+.hub-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);margin-bottom:0.6rem;}
+.hub-name{font-family:'Outfit',sans-serif;font-weight:200;font-size:1.9rem;letter-spacing:0.12em;color:#fff;line-height:1.15;}
+.hub-name span{display:block;font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.6em;color:var(--cyan);margin-top:0.4rem;}
+.hub-desc{font-size:0.9rem;color:#9AAFC8;line-height:1.8;font-weight:300;margin-top:1.25rem;max-width:280px;}
+.hub-dots{display:flex;gap:8px;margin-top:1.5rem;}
+.hub-dots i{width:8px;height:8px;border-radius:50%;}
+.pillar-card{position:relative;background:var(--ink);border:0.5px solid var(--border);padding:1.6rem 1.6rem 1.5rem;transition:border-color 0.25s,background 0.25s;}
+.pillar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--pc);opacity:0.75;}
+.pillar-card::after{content:'';position:absolute;top:50%;width:3rem;height:1px;opacity:0.55;transition:opacity 0.25s;}
+.pc-left{grid-column:1;}
+.pc-right{grid-column:3;}
+.pc-left::after{right:-3rem;background:linear-gradient(90deg,var(--pc),rgba(0,229,255,0.6));}
+.pc-right::after{left:-3rem;background:linear-gradient(270deg,var(--pc),rgba(0,229,255,0.6));}
+.r1{grid-row:1;} .r2{grid-row:2;} .r3{grid-row:3;}
+.pillar-card:hover{background:#0D1530;border-color:var(--pc);}
+.pillar-card:hover::after{opacity:1;}
+.pc-pillar{display:flex;align-items:center;gap:0.55rem;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--pc);margin-bottom:1rem;}
+.pc-dot{width:9px;height:9px;border-radius:50%;background:var(--pc);box-shadow:0 0 8px var(--pc);flex-shrink:0;}
+.pc-name{font-family:'Outfit',sans-serif;font-weight:400;font-size:1.08rem;color:#fff;margin-bottom:0.45rem;}
+.pc-desc{font-size:0.86rem;color:#8EA3BD;line-height:1.75;font-weight:300;}
+.pc-desc strong{color:var(--text);font-weight:400;}
+.pc-brand + .pc-brand{margin-top:1.15rem;padding-top:1.15rem;border-top:0.5px solid var(--border);}
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
@@ -193,6 +219,20 @@ footer{padding:3rem;border-top:0.5px solid var(--border);}
   .brand-card{padding:1.5rem;}
   .footer-logos{gap:1rem;}
   .section-title{font-size:1.6rem;}
+}
+
+/* Junction map: tablet = hub on top + two columns; phone = one column */
+@media (max-width: 1024px){
+  .junction-map{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1.25rem;}
+  .hub{grid-column:1 / -1;grid-row:auto;padding:2.25rem 1.5rem;}
+  .pillar-card{grid-column:auto;grid-row:auto;}
+  .pillar-card::after{display:none;}
+}
+@media (max-width: 640px){
+  .junction-map{grid-template-columns:1fr;}
+  .hub-mark{width:120px;height:120px;}
+  .hub-name{font-size:1.6rem;}
+  .pillar-card{padding:1.35rem 1.25rem;}
 }
 </style>
 </head>
@@ -350,59 +390,105 @@ footer{padding:3rem;border-top:0.5px solid var(--border);}
       <div class="section-divider-line"></div>
     </div>
     <div class="brands-intro">
-      <h2 class="section-title">Seven Brands.<br>One Junction.</h2>
-      <p>Each brand operates independently within its domain, powered by the shared energy, expertise, and network that flows through Josephson Labs at the center.</p>
+      <h2 class="section-title">Six Pillars. Seven Brands.<br>One Junction.</h2>
+      <p>Each brand operates independently within its pillar, powered by the shared energy, expertise, and network that flows through Josephson Labs at the center.</p>
     </div>
-    <div class="brands-grid">
-      <div class="brand-card" style="--c:#FF6EC7">
-        <style>.brand-card:nth-child(1)::after{background:#FF6EC7;}</style>
-        <div class="bc-dot" style="background:#FF6EC7;box-shadow:0 0 8px #FF6EC7aa;"></div>
-        <div class="bc-name">Team Allnighters</div>
-        <div class="bc-category" style="color:#FF6EC7;">Community &amp; Sport</div>
-        <div class="bc-desc">A spirited sports collective bringing together players, friends, and community across softball, volleyball, and charitable events since 1994.</div>
+
+    <div class="junction-map">
+
+      <!-- The junction: Josephson Labs -->
+      <div class="hub">
+        <svg class="hub-mark" viewBox="282 112 116 116" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="jmCore" cx="40%" cy="35%" r="65%"><stop offset="0%" stop-color="#0D2A5E"/><stop offset="50%" stop-color="#071428"/><stop offset="100%" stop-color="#040C1A"/></radialGradient>
+            <linearGradient id="jmJL" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#00E5FF"/><stop offset="50%" stop-color="#7B9FFF"/><stop offset="100%" stop-color="#D94FAD"/></linearGradient>
+            <clipPath id="jmClip"><circle cx="340" cy="170" r="27"/></clipPath>
+          </defs>
+          <circle cx="340" cy="170" r="28" fill="url(#jmCore)" stroke="#00AAFF" stroke-width="2"/>
+          <g clip-path="url(#jmClip)" opacity="0.4">
+            <path d="M312 162H325V156H333M347 156H355V162H368" fill="none" stroke="#00E5FF" stroke-width="0.5"/>
+            <path d="M312 180H322V186H331M349 186H358V180H368" fill="none" stroke="#7B9FFF" stroke-width="0.5"/>
+            <circle cx="340" cy="170" r="7" fill="none" stroke="#00AAFF" stroke-width="0.5"/>
+          </g>
+          <circle cx="340" cy="170" r="40" fill="none" stroke="#1A3560" stroke-width="3"/>
+          <path d="M 340 130 A 40 40 0 0 1 374.6 150" fill="none" stroke="#00FFC6" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 374.6 150 A 40 40 0 0 1 374.6 190" fill="none" stroke="#FF6EC7" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 374.6 190 A 40 40 0 0 1 340 210" fill="none" stroke="#A78BFF" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 340 210 A 40 40 0 0 1 305.4 190" fill="none" stroke="#FFD166" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 305.4 190 A 40 40 0 0 1 305.4 150" fill="none" stroke="#00E5FF" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 305.4 150 A 40 40 0 0 1 340 130" fill="none" stroke="#A3E635" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="376" cy="214" r="2.5" fill="#FF6EC7" opacity="0.9"/>
+          <circle cx="360" cy="225" r="3.5" fill="#A78BFF" opacity="0.85"/>
+          <circle cx="306" cy="198" r="3" fill="#FFD166" opacity="0.8"/>
+          <circle cx="318" cy="134" r="3" fill="#A3E635" opacity="0.85"/>
+          <circle cx="379" cy="158" r="2.5" fill="#00E5FF" opacity="0.9"/>
+          <text dominant-baseline="central" fill="url(#jmJL)" font-size="17" font-family="Outfit,sans-serif" font-weight="300">
+            <tspan x="328" y="170" text-anchor="middle">J</tspan>
+            <tspan x="353" y="170" text-anchor="middle">L</tspan>
+          </text>
+        </svg>
+        <div class="hub-label">The Junction</div>
+        <div class="hub-name">JOSEPHSON<span>LABS</span></div>
+        <p class="hub-desc">Shared strategy, technology, relationships, and operating support flow through the center and into every brand.</p>
+        <div class="hub-dots" aria-hidden="true">
+          <i style="background:#00E5FF"></i><i style="background:#A3E635"></i><i style="background:#FF6EC7"></i><i style="background:#FFD166"></i><i style="background:#00FFC6"></i><i style="background:#A78BFF"></i>
+        </div>
       </div>
-      <div class="brand-card">
-        <style>.brand-card:nth-child(2)::after{background:#00FFC6;}</style>
-        <div class="bc-dot" style="background:#00FFC6;box-shadow:0 0 8px #00FFC6aa;"></div>
-        <div class="bc-name">Boston Pickleball Association</div>
-        <div class="bc-category" style="color:#00FFC6;">Sport &amp; Instruction</div>
-        <div class="bc-desc">Professional pickleball instruction, venue consulting, and sports development. Coaching, training, and building the sport from the ground up.</div>
-      </div>
-      <div class="brand-card">
-        <style>.brand-card:nth-child(3)::after{background:#FFD166;}</style>
-        <div class="bc-dot" style="background:#FFD166;box-shadow:0 0 8px #FFD166aa;"></div>
-        <div class="bc-name">Play for a Cause</div>
-        <div class="bc-category" style="color:#FFD166;">Philanthropy</div>
-        <div class="bc-desc">A nonprofit platform that transforms play into purpose — organizing fundraising events like tournaments, galas, and tastings that connect donors to causes they love.</div>
-      </div>
-      <div class="brand-card">
-        <style>.brand-card:nth-child(4)::after{background:#00E5FF;}</style>
-        <div class="bc-dot" style="background:#00E5FF;box-shadow:0 0 8px #00E5FFaa;"></div>
-        <div class="bc-name">Outcome Builder AI</div>
-        <div class="bc-category" style="color:#00E5FF;">Technology</div>
-        <div class="bc-desc">A full-service technology solutions provider building web platforms, AI assistants, CRMs, and custom digital infrastructure for modern businesses.</div>
-      </div>
-      <div class="brand-card">
-        <style>.brand-card:nth-child(5)::after{background:#A78BFF;}</style>
-        <div class="bc-dot" style="background:#A78BFF;box-shadow:0 0 8px #A78BFFaa;"></div>
-        <div class="bc-name">monetizationCloud</div>
-        <div class="bc-category" style="color:#A78BFF;">Business Operations</div>
-        <div class="bc-desc">An outcomes enablement platform helping companies architect their sales, revenue, and marketing operations for sustainable, scalable growth.</div>
-      </div>
-      <div class="brand-card">
-        <style>.brand-card:nth-child(6)::after{background:#FF6EC7;}</style>
-        <div class="bc-dot" style="background:#FF6EC7;box-shadow:0 0 8px #FF6EC7aa;"></div>
-        <div class="bc-name">The Stowe Times</div>
-        <div class="bc-category" style="color:#FF6EC7;">Community &amp; Lifestyle</div>
-        <div class="bc-desc">A storied tradition of travel, camaraderie, and friendship — organizing annual group experiences for a growing community of friends since 1989.</div>
-      </div>
-      <div class="brand-card brand-card-wide">
-        <style>.brand-card:nth-child(7)::after{background:#A3E635;}</style>
-        <div class="bc-dot" style="background:#A3E635;box-shadow:0 0 8px #A3E635aa;"></div>
-        <div class="bc-name">HabitStack Health</div>
-        <div class="bc-category" style="color:#A3E635;">Health &amp; Wellness Technology</div>
-        <div class="bc-desc">An enterprise health technology company that helps treatment providers, pharmacies, and wellness clinics keep patients engaged between visits. Its consumer app, <strong>HydroPro Tracker</strong>, turns simple daily habits like hydration into patient-consented insights that support more proactive care.</div>
-      </div>
+
+      <!-- Left column -->
+      <article class="pillar-card pc-left r1" style="--pc:#FFD166;">
+        <div class="pc-pillar"><span class="pc-dot"></span>Philanthropy</div>
+        <div class="pc-brand">
+          <h3 class="pc-name">Play for a Cause</h3>
+          <p class="pc-desc">A nonprofit platform that transforms play into purpose, organizing fundraising events like tournaments, galas, and tastings that connect donors to causes they love.</p>
+        </div>
+      </article>
+
+      <article class="pillar-card pc-left r2" style="--pc:#FF6EC7;">
+        <div class="pc-pillar"><span class="pc-dot"></span>Community</div>
+        <div class="pc-brand">
+          <h3 class="pc-name">Team Allnighters</h3>
+          <p class="pc-desc">A spirited sports collective bringing together players, friends, and community across softball, volleyball, and charity events since 1994.</p>
+        </div>
+        <div class="pc-brand">
+          <h3 class="pc-name">The Stowe Times</h3>
+          <p class="pc-desc">A tradition of travel, camaraderie, and friendship, organizing annual group experiences for a growing community of friends since 1989.</p>
+        </div>
+      </article>
+
+      <article class="pillar-card pc-left r3" style="--pc:#00E5FF;">
+        <div class="pc-pillar"><span class="pc-dot"></span>Technology</div>
+        <div class="pc-brand">
+          <h3 class="pc-name">Outcome Builder AI</h3>
+          <p class="pc-desc">A technology solutions provider building web platforms, AI assistants, CRMs, and custom digital infrastructure, starting from the outcomes each client needs.</p>
+        </div>
+      </article>
+
+      <!-- Right column -->
+      <article class="pillar-card pc-right r1" style="--pc:#00FFC6;">
+        <div class="pc-pillar"><span class="pc-dot"></span>Sport</div>
+        <div class="pc-brand">
+          <h3 class="pc-name">Boston Pickleball Association</h3>
+          <p class="pc-desc">Professional pickleball instruction, venue consulting, and sports development: coaching, training, and building the sport from the ground up.</p>
+        </div>
+      </article>
+
+      <article class="pillar-card pc-right r2" style="--pc:#A3E635;">
+        <div class="pc-pillar"><span class="pc-dot"></span>Health</div>
+        <div class="pc-brand">
+          <h3 class="pc-name">HabitStack Health</h3>
+          <p class="pc-desc">An enterprise health technology company helping treatment providers, pharmacies, and wellness clinics keep patients engaged between visits. Its consumer app, <strong>HydroPro Tracker</strong>, turns simple daily habits like hydration into patient-consented insights for more proactive care.</p>
+        </div>
+      </article>
+
+      <article class="pillar-card pc-right r3" style="--pc:#A78BFF;">
+        <div class="pc-pillar"><span class="pc-dot"></span>Business</div>
+        <div class="pc-brand">
+          <h3 class="pc-name">monetizationCloud</h3>
+          <p class="pc-desc">An outcomes enablement platform helping companies architect their sales, revenue, and marketing operations for sustainable, scalable growth.</p>
+        </div>
+      </article>
+
     </div>
   </div>
 </section>
